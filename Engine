@@ -1,0 +1,116 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FindCommontNodeAncestor
+{   
+    public class BinaryTree
+    {
+        public string value;
+        public BinaryTree left;
+        public BinaryTree right;
+
+        public BinaryTree() { }
+
+        public BinaryTree(string val)
+        {
+            value = val;
+            left = null;
+            right = null;
+        }
+
+        public BinaryTree(string[] values) : this(values, 0) { }
+
+        public BinaryTree(string[] values, int index)
+        {
+            Load(this, values, index);
+        }
+
+        public void Load(BinaryTree tree, string[] values, int index)
+        {
+            this.value = values[index];
+
+            if (index * 2 + 1 < values.Length)
+            {                       
+                this.left = new BinaryTree(values, index * 2 + 1);
+            }
+            if (index * 2 + 2 < values.Length)
+            {
+                this.right = new BinaryTree(values, index * 2 + 2);
+            }
+        }
+    }
+    
+     // Function To find the Lowest Common Ancestor
+        public static BinaryTree findLowestCommonAncestor(BinaryTree root, BinaryTree p, BinaryTree q)
+        {
+            if (root == null)
+                return null;
+
+            if (root == p || root == q)
+                return root;
+
+            BinaryTree left = findLowestCommonAncestor(root.left, p, q);
+            BinaryTree right = findLowestCommonAncestor(root.right, p, q);
+
+            if (left != null && right != null)
+                return root;
+
+            if (left != null)
+                return left;
+            else
+                return right;
+        }
+        
+        {
+        
+        public class Engine
+    {     
+        static void Main(string[] args)
+        {          
+            IList<string> listValues = new List<string>();
+
+            string firstEmployee = Console.ReadLine();
+            string secondEmployee = Console.ReadLine();
+          
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (input == "end")
+	            {
+                    break;
+	            }
+                //add remove white spaces
+                var inputArray = input.Split('-');
+
+                if (!listValues.Contains(inputArray[0]))
+                {
+                    listValues.Add(inputArray[0]);
+                }
+
+                if (!listValues.Contains(inputArray[1]))
+                {
+                    listValues.Add(inputArray[1]);
+                }
+            
+            }
+           
+            string[] values = new string[] {"Batman","Dimitar", "Stamat", "Vladislav","Anatoli","Toni1","Toni2","Toni3"};
+            //string[] values = listValues.ToArray();
+            BinaryTree tree = new BinaryTree(values);
+            int firstEmployeeIndex = Array.IndexOf(values, firstEmployee);
+            int secondEmployeeIndex = Array.IndexOf(values, secondEmployee);
+            //
+            BinaryTree first = new BinaryTree(values, firstEmployeeIndex);
+            BinaryTree second = new BinaryTree(values, secondEmployeeIndex);
+
+            //BinaryTree first = tree.left.left;
+            //BinaryTree second = tree.left.left;
+            BinaryTree newTree = new BinaryTree();
+            newTree = findLowestCommonAncestor(tree, first, second);
+
+            Console.WriteLine(newTree.value);
+        }
+}
