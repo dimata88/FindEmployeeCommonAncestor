@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SoftServeDemo01
+{
+    class SSDemo01
+    {
+        static Dictionary<string, string> inputPairs = new Dictionary<string, string>();
+        //Add employee-manager pairs into Dictionary;
+        static void AddEmployee(string managerName, string employeeName)
+        {
+            if (inputPairs.ContainsKey(employeeName) && inputPairs[employeeName] == string.Empty)
+            {
+                inputPairs[employeeName] = managerName;
+            }
+            else
+            {
+                inputPairs.Add(employeeName, managerName);
+                if (!inputPairs.ContainsKey(managerName))
+                {
+                    inputPairs.Add(managerName, string.Empty);
+                }
+            }
+        }
+        //Method to find the closest common manager of the two employees...
+        static string FindCommonAncestor(string firstEmployee, string secondEmployee)
+        {
+            if (!inputPairs.ContainsKey(firstEmployee))
+                return string.Empty;
+            if (!inputPairs.ContainsKey(secondEmployee))
+                return string.Empty;
+            HashSet<string> managers = new HashSet<string>();
+            string firstManager = inputPairs[firstEmployee];
+            string secondManager = inputPairs[secondEmployee];
+
+            while (!string.IsNullOrEmpty(firstManager) || !string.IsNullOrEmpty(secondManager))
+            {
+                if (!string.IsNullOrEmpty(firstManager))
+                {
+                    if (managers.Add(firstManager))
+                    {
+                        firstManager = inputPairs[firstManager];
+                    }
+                    else
+                        return firstManager;
+                }
+                if (!string.IsNullOrEmpty(secondManager))
+                {
+                    if (managers.Add(secondManager))
+                    {
+                        secondManager = inputPairs[secondManager];
+                    }
+                    else
+                        return secondManager;
+                }
+            }
+            return string.Empty;
+        }
+        //Print results...
+        static void PrintCommonAncestor(string managerName, string firstEmployee, string secondEmployee)
+        {
+            if (string.IsNullOrEmpty(managerName))
+            {
+                Console.WriteLine("The two employees do not have common manager!");
+            }
+            else
+            {
+                Console.WriteLine("The common manager of {0} and {1} is --> {2}",
+                    firstEmployee, secondEmployee, managerName);
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            string firstEmployee = Console.ReadLine();
+            string secondEmployee = Console.ReadLine();
+
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (input == "end")
+                {
+                    break;
+                }
+                string[] splitInput = input.Split('-');
+                if (splitInput.Length == 2)
+                {
+                    AddEmployee(splitInput[0], splitInput[1]);
+                }
+            }
+            PrintCommonAncestor(FindCommonAncestor(firstEmployee, secondEmployee), firstEmployee, secondEmployee);
+        }
+    }
+}
