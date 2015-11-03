@@ -22,7 +22,7 @@ namespace FindCommontNodeAncestor
 	            {
                     break;
 	            }
-                //add remove white spaces
+                
                 var inputArray = input.Split('-');
 
                 if (!listValues.Contains(inputArray[0]))
@@ -37,7 +37,7 @@ namespace FindCommontNodeAncestor
             
             }
            
-            //string[] values = new string[] {"Batman","Dimitar", "Stamat", "Vladislav","Anatoli","Toni1","Toni2","Toni3"};
+            //string[] values = new string[] {"e1","e2", "e3", "e4","e5","e6","e7","e8"};
             string[] values = listValues.ToArray();
             BinaryTree tree = new BinaryTree(values);
             int firstEmployeeIndex = Array.IndexOf(values, firstEmployee);
@@ -48,6 +48,7 @@ namespace FindCommontNodeAncestor
 
             //BinaryTree first = tree.left.left;
             //BinaryTree second = tree.left.left;
+            
             BinaryTree newTree = new BinaryTree();
             newTree = findLowestCommonAncestor(tree, first, second);
 
