@@ -40,6 +40,8 @@ namespace FindCommontNodeAncestor
             //string[] values = new string[] {"e1","e2", "e3", "e4","e5","e6","e7","e8"};
             string[] values = listValues.ToArray();
             BinaryTree tree = new BinaryTree(values);
+            
+            //???
             int firstEmployeeIndex = Array.IndexOf(values, firstEmployee);
             int secondEmployeeIndex = Array.IndexOf(values, secondEmployee);
             
