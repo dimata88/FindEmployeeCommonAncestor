@@ -7,7 +7,7 @@ namespace SoftServeDemo01
     class Program
     {
 
-        static IDictionary<string, string> employees = new Dictionary<string, string>();
+         public static IDictionary<string, string> employees = new Dictionary<string, string>();
 
         static void AddEmployee(string manager, string employee)
         {
@@ -25,7 +25,7 @@ namespace SoftServeDemo01
             }
             else
             {
-                try//Change manager-employee pair to  employee-manager
+                try//Change manager-employee pair
                 {
                     employees.Add(employee, manager);
                     if (!employees.ContainsKey(manager))
