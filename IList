@@ -1,0 +1,129 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SoftServeDemo01
+{
+    class Program
+    {
+
+        static IDictionary<string, string> employees = new Dictionary<string, string>();
+
+        static void AddEmployee(string manager, string employee)
+        {
+            if (employees.ContainsKey(manager) && employees[manager] == employee)
+            {
+                Console.WriteLine("{0} is manager of {1}", employee, manager);
+            }
+            else if (employees.Count(x => x.Value == manager) == 2)
+            {
+                Console.WriteLine("you enter more then two names");
+            }
+            else if (employees.ContainsKey(employee) && employees[employee] == string.Empty)
+            {
+                employees[employee] = manager;
+            }
+            else
+            {
+                try//Change manager-employee pair to  employee-manager
+                {
+                    employees.Add(employee, manager);
+                    if (!employees.ContainsKey(manager))
+                    {
+                        employees.Add(manager, string.Empty);
+                    }
+                }
+                catch (ArgumentException)
+                {
+
+                    Console.WriteLine("Employee already exist!");
+                }
+            }
+        }
+
+        static string FindLCA(string firstEmpl, string secondEmpl)
+        {
+            if (!employees.ContainsKey(firstEmpl))
+            {
+                Console.WriteLine("One of the searched employees do not exist!");
+                return string.Empty;
+            }
+            if (!employees.ContainsKey(secondEmpl))
+            {
+                Console.WriteLine("One of the searched employees do not exist!");
+                return string.Empty;
+            }
+            //HashSet<string> allManagers = new HashSet<string>();
+            IList<string> allManagers = new List<string>();
+            string firstManager = employees[firstEmpl];
+            string secondManager = employees[secondEmpl];
+            while (!string.IsNullOrEmpty(firstManager) || !string.IsNullOrEmpty(secondManager))
+            {
+                if (!string.IsNullOrEmpty(firstManager))
+                {
+                    if (allManagers.Contains(firstManager))
+                    {
+                        firstManager = employees[firstManager];
+                    }
+                    else
+                    {
+                        return firstManager;
+                    }
+                }
+                if (!string.IsNullOrEmpty(secondManager))
+                {
+                    if (allManagers.Contains(secondManager))
+                    {
+                        secondManager = employees[secondManager];
+                    }
+                    else
+                    {
+                        return secondManager;
+                    }
+                }
+            }
+            return string.Empty;
+        }
+
+        static void PrintResult(string manager, string firstEmpl, string secondEmpl)
+        {
+            if (string.IsNullOrEmpty(manager))
+            {
+                Console.WriteLine("Employees {0} and {1} do not have common manager.",
+                    firstEmpl, secondEmpl);
+            }
+            else
+            {
+                Console.WriteLine("{0} is common manager of {1} and {2}.",
+                    manager, firstEmpl, secondEmpl);
+            }
+        }
+
+        public static void Main(string[] args)
+        {
+
+            string firstEmpl = Console.ReadLine();
+            string secondEmpl = Console.ReadLine();
+
+            while (true)
+            {
+
+                string input = Console.ReadLine();
+                if (input.ToLower() == "end")
+                {
+                    break;
+                }
+                string[] inputSplit = input.Split(new char[] { '-', ' ' });
+                if (inputSplit.Length == 2)
+                {
+                    AddEmployee(inputSplit[0].TrimEnd(' '), inputSplit[1]);
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect input!\n");
+                }
+            }
+            PrintResult(FindLCA(firstEmpl, secondEmpl), firstEmpl, secondEmpl);
+        }
+    }
+}
